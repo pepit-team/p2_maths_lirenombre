@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -175,13 +174,6 @@ public class ExerciseActivity extends Activity {
 	    }
 	}
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-	getMenuInflater().inflate(R.menu.activity_jeu_chiffres_vers_nombres,
-		menu);
-	return true;
     }
 
     public void setTextViewText(int TVid, String text) {
