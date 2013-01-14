@@ -39,9 +39,12 @@ public class MainActivity extends Activity {
 	Button button_exo = (Button) findViewById(R.id.button1);
 	button_exo.setOnClickListener(new View.OnClickListener() {
 	    public void onClick(View v) {
-		Intent myIntent = new Intent(MainActivity.this,
+		Intent intent = new Intent(MainActivity.this,
 			ExerciseActivity.class);
-		MainActivity.this.startActivity(myIntent);
+		
+		intent.putExtra("mode", "0");
+		intent.putExtra("difficulty", "3");
+		startActivity(intent);
 	    }
 	});
 
