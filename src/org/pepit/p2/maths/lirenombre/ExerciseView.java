@@ -1,7 +1,7 @@
 /**
  * @file org/pepit/p2/maths/lirenombre/ExerciseActivity.java
  * 
- * PepitModel: an educational software
+ * PepitMobil: an educational software
  * This file is a part of the PepitModel environment
  * http://pepit.be
  *
@@ -23,36 +23,27 @@
 
 package org.pepit.p2.maths.lirenombre;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ExerciseActivity extends Activity {
+public class ExerciseView {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-
-	Intent intent = getIntent();
-	mode = Integer.parseInt(intent.getStringExtra("mode"));
-	max = Integer.parseInt(intent.getStringExtra("difficulty")) * 10;
-
-	LinearLayout rootLayout = new LinearLayout(this);
-	LinearLayout.LayoutParams rootLayoutParams = new LinearLayout.LayoutParams(
-		LinearLayout.LayoutParams.MATCH_PARENT,
-		LinearLayout.LayoutParams.MATCH_PARENT);
-
+    public ExerciseView(Context ctx, int mode, int max) {
+	this.mode = mode;
+	this.max = max;
+	
+	rootLayout = new LinearLayout(ctx);
 	rootLayout.setOrientation(LinearLayout.VERTICAL);
+	
 	questionTextViews = new TextView[QuestionNumber];
 	answerButtons = new Button[QuestionNumber];
 	proposalButtons = new Button[QuestionNumber];
 	for (int i = 0; i < QuestionNumber; ++i) {
-	    LinearLayout lineLayout = new LinearLayout(this);
+	    LinearLayout lineLayout = new LinearLayout(ctx);
 	    LinearLayout.LayoutParams lineLayoutParams = new LinearLayout.LayoutParams(
 		    LinearLayout.LayoutParams.MATCH_PARENT,
 		    LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -61,16 +52,16 @@ public class ExerciseActivity extends Activity {
 		    LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 
 	    lineLayout.setOrientation(LinearLayout.HORIZONTAL);
-	    questionTextViews[i] = new TextView(this);
+	    questionTextViews[i] = new TextView(ctx);
 	    questionTextViews[i].setGravity(Gravity.CENTER_HORIZONTAL);
 	    questionTextViews[i].setText("????");
 	    questionTextViews[i].setTextSize(30);
 
-	    answerButtons[i] = new Button(this);
+	    answerButtons[i] = new Button(ctx);
 	    answerButtons[i].setText("????");
 	    answerButtons[i].setTextSize(30);
 
-	    proposalButtons[i] = new Button(this);
+	    proposalButtons[i] = new Button(ctx);
 	    proposalButtons[i].setText("????");
 	    proposalButtons[i].setTextSize(30);
 
@@ -80,9 +71,6 @@ public class ExerciseActivity extends Activity {
 
 	    rootLayout.addView(lineLayout, lineLayoutParams);
 	}
-
-	setContentView(rootLayout, rootLayoutParams);
-
 	init();
     }
 
@@ -90,30 +78,8 @@ public class ExerciseActivity extends Activity {
 	lines = new int[QuestionNumber];
 	answers = new int[QuestionNumber][QuestionNumber];
 
-	remainingProposalNumber = QuestionNumber;
 	correctAnswerNumber = 0;
-
-	// Button retour = (Button) findViewById(R.id.retourButton);
-	// retour.setOnClickListener(new View.OnClickListener() {
-	// public void onClick(View v) {
-	// finish();
-	// }
-	// });
-	// Button next = (Button) findViewById(R.id.next);
-	// next.setOnClickListener(new View.OnClickListener() {
-	// public void onClick(View v) {
-	// shuffle();
-	// }
-	// });
-	// Button recommencer = (Button) findViewById(R.id.recommencer);
-	// recommencer.setOnClickListener(new View.OnClickListener() {
-	// public void onClick(View v) {
-	// recreate();
-	// }
-	// });
-
 	shuffle();
-
 	for (int i = 0; i < QuestionNumber; i++) {
 	    final int ifinal = i;
 	    answerButtons[i].setOnClickListener(new View.OnClickListener() {
@@ -141,18 +107,21 @@ public class ExerciseActivity extends Activity {
 				    question.setText(numbers[answers[ifinal][jfinal]]);
 				}
 				hideProposals();
-				check();
+				checkResponses();
 			    }
 			});
 		    }
 		}
 	    });
 	}
-
+    }
+    
+    public boolean check() {
+	return finished;
     }
 
-    private void check() {
-	boolean finished = true;
+    private void checkResponses() {
+	finished = true;
 	for (int i = 0; i < QuestionNumber; i++) {
 	    if (answerButtons[i].getText().equals("______"))
 		finished = false;
@@ -188,8 +157,8 @@ public class ExerciseActivity extends Activity {
 		    ++correctAnswerNumber;
 		    answerButtons[i].setVisibility(android.view.View.INVISIBLE);
 		}
-	    }
-//	    remainingProposalNumber--;
+	    }	    
+	    
 //	    if (remainingProposalNumber > 0) {
 //		Button next = (Button) findViewById(R.id.next);
 //		next.setVisibility(android.view.View.VISIBLE);
@@ -206,18 +175,21 @@ public class ExerciseActivity extends Activity {
 //		}
 //	    }
 	}
-
+    }
+    
+    public LinearLayout getLayout() {
+	return rootLayout;
     }
 
-    public void setTextViewText(int TVid, String text) {
-	TextView tv = (TextView) findViewById(TVid);
-	tv.setText(text);
-    }
-
-    public void setButtonText(int Bid, String text) {
-	Button bt = (Button) findViewById(Bid);
-	bt.setText(text);
-    }
+//    public void setTextViewText(int TVid, String text) {
+//	TextView tv = (TextView) findViewById(TVid);
+//	tv.setText(text);
+//    }
+//
+//    public void setButtonText(int Bid, String text) {
+//	Button bt = (Button) findViewById(Bid);
+//	bt.setText(text);
+//    }
 
     public int[] getNumbersAtRandom(int fixed) {
 	int lignes[] = new int[QuestionNumber];
@@ -272,16 +244,6 @@ public class ExerciseActivity extends Activity {
 	    c2.setTextColor(android.graphics.Color.BLACK);
 	}
 	hideProposals();
-
-//	Button next = (Button) findViewById(R.id.next);
-//	next.setVisibility(android.view.View.INVISIBLE);
-
-	// TextView scoreFinal = (TextView) findViewById(R.id.scoreFinal);
-	// scoreFinal.setVisibility(android.view.View.INVISIBLE);
-	//
-	// Button recommencer = (Button) findViewById(R.id.recommencer);
-	// recommencer.setVisibility(android.view.View.INVISIBLE);
-
     }
 
     private static String[] numbers = { "Zero", "Un", "Deux", "Trois",
@@ -315,6 +277,7 @@ public class ExerciseActivity extends Activity {
 
     private static int QuestionNumber = 5;
 
+    private LinearLayout rootLayout;
     private TextView[] questionTextViews;
     private Button[] answerButtons;
     private Button[] proposalButtons;
@@ -322,8 +285,9 @@ public class ExerciseActivity extends Activity {
     private int lines[];
     private int answers[][];
 
-    private int remainingProposalNumber;
+    private boolean finished;
     private int correctAnswerNumber;
+    
     private int max;
     private int mode;
 }

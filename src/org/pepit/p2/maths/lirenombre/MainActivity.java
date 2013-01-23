@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 	button_exo.setOnClickListener(new View.OnClickListener() {
 	    public void onClick(View v) {
 		Intent intent = new Intent(MainActivity.this,
-			ExerciseActivity.class);
+			ExerciseView.class);
 		
 		intent.putExtra("mode", "0");
 		intent.putExtra("difficulty", "3");
