@@ -23,7 +23,6 @@
 
 package org.pepit.p2.maths.lirenombre;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -57,8 +56,7 @@ public class Exercise implements org.pepit.plugin.Interface {
     }
 
     @Override
-    public LinearLayout getExercisePresentationLayout(Context ctx,
-	    File rootResource) {
+    public LinearLayout getExercisePresentationLayout(Context ctx) {
 	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 		LinearLayout.LayoutParams.MATCH_PARENT,
 		LinearLayout.LayoutParams.MATCH_PARENT);
@@ -97,7 +95,7 @@ public class Exercise implements org.pepit.plugin.Interface {
 
     @Override
     public LinearLayout getExplanationPresentationLayout(Context ctx,
-	    File rootResource, int selectedExercise) {
+	    int selectedExercise) {
 	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 		LinearLayout.LayoutParams.MATCH_PARENT,
 		LinearLayout.LayoutParams.MATCH_PARENT);
@@ -135,8 +133,8 @@ public class Exercise implements org.pepit.plugin.Interface {
     }
 
     @Override
-    public LinearLayout getQuestionLayout(Context ctx, File rootResource,
-	    int selectedExercise, int selectedModule, int numQuestion) {
+    public LinearLayout getQuestionLayout(Context ctx, int selectedExercise,
+	    int selectedModule, int numQuestion) {
 	view = new ExerciseView(ctx, (selectedModule < 5) ? 1 : 0,
 		10 * (selectedExercise + 1));
 	return view.getLayout();
