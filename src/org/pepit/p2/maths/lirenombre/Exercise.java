@@ -172,7 +172,7 @@ public class Exercise implements org.pepit.plugin.Interface {
     }
 
     @Override
-    public int getScore() {
+    public int getPointsRightAnswer(int selectedExercise) {
 	return 0;
     }
 
